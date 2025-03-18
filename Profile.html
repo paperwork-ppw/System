@@ -11,58 +11,107 @@
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
     <!-- นำเข้า SweetAlert2 สำหรับการแสดงการแจ้งเตือน -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- นำเข้า Font Awesome สำหรับไอคอน -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Custom SweetAlert2 CSS */
+        .swal2-popup {
+            width: 300px;
+            border-radius: 20px;
+            background: #0d0d0d;
+            color: #00cc66;
+            border: 2px solid #00cc66;
+        }
+        .swal2-confirm {
+            padding: 8px 20px;
+            font-size: 14px;
+            border-radius: 10px;
+            height: auto;
+            line-height: 1.5;
+            background-color: #00cc66;
+            border: none;
+            color: #0d0d0d;
+        }
+        .swal2-confirm:hover {
+            background-color: #00b359;
+        }
+        /* Custom Input Animation */
+        .input-field {
+            transition: all 0.3s ease;
+            background: #f0f0f0;
+            border: 2px solid transparent;
+        }
+        .input-field:focus {
+            border-color: #00cc66;
+            box-shadow: 0 0 10px rgba(0, 204, 102, 0.5);
+            background: #ffffff;
+        }
+        .profile-image {
+            transition: transform 0.3s ease;
+        }
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+        .icon-animation {
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .icon-animation:hover {
+            transform: scale(1.2);
+            color: #00cc66;
+        }
+    </style>
 </head>
 
-<body class="bg-slate-300 flex items-center justify-center  h-screen p-6">
-    <div class="bg-white max-w-sm w-full text-slate-800 p-10 rounded-xl shadow-md">
-        <h2 class="text-lg text-center mb-4">INFORMATION MEMEBER</h2>
+<body class="bg-slate-300 flex items-center justify-center h-screen p-6">
+    <div class="bg-white max-w-sm w-full text-slate-800 p-10 rounded-xl shadow-md transform transition-all duration-300 hover:shadow-2xl">
+        <h2 class="text-lg text-center mb-4"><i class="fas fa-user-circle mr-2 icon-animation"></i>INFORMATION MEMBER</h2>
         <form id="edit-form">
             <!-- ช่องสำหรับเก็บข้อมูล ID ซ่อนอยู่ -->
             <input type="hidden" id="edit-id">
             <div class="mb-4 hidden">
                 <label for="edit-userID" class="block text-sm">UserID</label>
-                <input type="text" id="edit-userID" class="w-full border px-2 py-1 rounded-xl" disabled>
+                <input type="text" id="edit-userID" class="w-full border px-2 py-1 rounded-xl input-field" disabled>
             </div>
             <div class="mb-4 flex justify-center">
                 <!-- ช่องสำหรับแสดง URL รูปภาพ ซ่อนอยู่ -->
                 <label for="edit-imageUrl" class="block hidden text-sm">URL รูปภาพ</label>
-                <input type="hidden" id="edit-imageUrl" class="w-full border px-2 py-1 rounded-xl"
+                <input type="hidden" id="edit-imageUrl" class="w-full border px-2 py-1 rounded-xl input-field"
                     oninput="updateImagePreview()" disabled>
                 <!-- แสดงภาพโปรไฟล์ -->
                 <img id="image-preview"
                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                    alt="Image Preview" class="mt-2 max-h-24 rounded">
+                    alt="Image Preview" class="mt-2 max-h-24 rounded profile-image">
             </div>
             <!-- ส่วนสำหรับอัปโหลดรูปภาพ -->
             <div class="mb-4 hidden" id="image-upload-section">
-                <label for="edit-image" class="block text-sm">อัปโหลดรูปโปรไฟล์</label>
-                <input type="file" id="edit-image" class="w-full border px-2 py-1 rounded-xl" disabled>
+                <label for="edit-image" class="block text-sm"><i class="fas fa-upload mr-2 icon-animation"></i>อัปโหลดรูปโปรไฟล์</label>
+                <input type="file" id="edit-image" class="w-full border px-2 py-1 rounded-xl input-field" disabled>
             </div>
             <!-- ฟิลด์สำหรับกรอกชื่อพนักงาน -->
             <div class="mb-4">
-                <label for="edit-name" class="block text-sm">Name Surname</label>
-                <input type="text" id="edit-name" class="w-full text-slate-800 border px-2 py-1 rounded-xl" disabled>
+                <label for="edit-name" class="block text-sm"><i class="fas fa-user mr-2 icon-animation"></i>Name Surname</label>
+                <input type="text" id="edit-name" class="w-full text-slate-800 border px-2 py-1 rounded-xl input-field" disabled>
             </div>
             <!-- ฟิลด์สำหรับกรอกรหัสพนักงาน -->
             <div class="mb-4">
-                <label for="edit-employeeID" class="block text-sm">Phone Number</label>
-                <input type="text" id="edit-employeeID" class="w-full text-slate-800 border px-2 py-1 rounded-xl"
+                <label for="edit-employeeID" class="block text-sm"><i class="fas fa-phone mr-2 icon-animation"></i>Phone Number</label>
+                <input type="text" id="edit-employeeID" class="w-full text-slate-800 border px-2 py-1 rounded-xl input-field"
                     disabled>
             </div>
             <!-- ฟิลด์สำหรับกรอกแผนก -->
             <div class="mb-4">
-                <label for="edit-department" class="block text-sm">Gmail</label>
-                <input type="text" id="edit-department" class="w-full text-slate-800 border px-2 py-1 rounded-xl"
+                <label for="edit-department" class="block text-sm"><i class="fas fa-envelope mr-2 icon-animation"></i>Gmail</label>
+                <input type="text" id="edit-department" class="w-full text-slate-800 border px-2 py-1 rounded-xl input-field"
                     disabled>
             </div>
             <!-- ปุ่มสำหรับแก้ไขข้อมูล ยกเลิก และบันทึก -->
             <div class="flex justify-end">
                 <button type="button" id="edit-button"
-                    class="bg-yellow-500 text-white py-1 px-3 rounded-xl hover:bg-yellow-700">Edit</button>
-                <button type="button" class="bg-red-500 text-white py-1 px-3 rounded-xl hover:bg-red-700 mr-2 hidden"
-                    onclick="cancelEdit()">ยกเลิก</button>
+                    class="bg-yellow-500 text-white py-1 px-3 rounded-xl hover:bg-yellow-700 transform hover:scale-105"><i class="fas fa-edit mr-2"></i>Edit</button>
+                <button type="button" class="bg-red-500 text-white py-1 px-3 rounded-xl hover:bg-red-700 mr-2 hidden transform hover:scale-105"
+                    onclick="cancelEdit()"><i class="fas fa-times mr-2"></i>ยกเลิก</button>
                 <button type="submit"
-                    class="bg-blue-500 text-white py-1 px-3 rounded-xl hover:bg-blue-700 hidden">Save</button>
+                    class="bg-blue-500 text-white py-1 px-3 rounded-xl hover:bg-blue-700 hidden transform hover:scale-105"><i class="fas fa-save mr-2"></i>Save</button>
             </div>
         </form>
     </div>
